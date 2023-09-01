@@ -9,6 +9,7 @@ namespace EspacioPrograma
         private string nombre;
         private string telefono;
         private List<Cadete> listadoCadetes;
+        private List<Pedido> listadoPedidos;
         private int totalEnvios;
         private float totalGanado;
         private double cantPromEnvios;
@@ -18,6 +19,7 @@ namespace EspacioPrograma
         public int TotalEnvios { get => totalEnvios; set => totalEnvios = value; }
         public float TotalGanado { get => totalGanado; set => totalGanado = value; }
         public double CantPromEnvios { get => cantPromEnvios; set => cantPromEnvios = value; }
+        public List<Pedido> ListadoPedidos { get => listadoPedidos; set => listadoPedidos = value; }
 
         public Cadeteria(string name, string phone, List<Cadete> lista)
         {
@@ -25,7 +27,43 @@ namespace EspacioPrograma
             this.telefono = phone;
             this.listadoCadetes = new List<Cadete>();
             this.listadoCadetes.AddRange(lista);
+            this.listadoPedidos=new List<Pedido>();
         }
+
+        public void TomarPedido(Pedido pedido)
+        {
+            this.listadoPedidos.Add(pedido);
+        }
+
+        public double JornalACobrar(int idCadete){
+            int totalPedidos=0;
+            var cad=this.listadoCadetes.FirstOrDefault(l=>l.Id==idCadete);
+            if(cad!=null)
+            {
+                foreach (var item in this.ListadoPedidos)
+                {
+                    if(item.CadeteAsignado==cad)
+                    {
+                        totalPedidos++;
+                    }
+                }
+            }
+            double total=totalPedidos*500;
+            return(total);
+        }
+
+        public void AsignarCadeteaPedidoPorId(int idCad, int idPedido )
+        {
+           var CadeteAAsignar = this.listadoCadetes.FirstOrDefault(l=> l.Id == idCad);
+           var pedido= this.listadoPedidos.FirstOrDefault(l=>l.Nro==idPedido);
+           if(CadeteAAsignar!=null && pedido!=null)
+           {
+                pedido.AsignarCadeteAPedido(CadeteAAsignar);
+           }else
+           {
+                Console.WriteLine("No se encuentra el cliente");
+           }
+       }
         public void Mostrar()
         {
             int contador = 1;
@@ -37,35 +75,6 @@ namespace EspacioPrograma
                 item.Mostrar();
                 contador += 1;
             }
-        }
-
-        public void CalcularTotal()
-        {
-            if (listadoCadetes != null && listadoCadetes.Any())
-            {
-                this.TotalEnvios = listadoCadetes.Sum(l => l.CantEnvios);
-                this.TotalGanado = listadoCadetes.Sum(l => l.CantGanado);
-                this.CantPromEnvios = (double)listadoCadetes.Average(l => l.CantEnvios);
-            }else
-            {
-                Console.WriteLine("La lista esta vacia");
-            }
-
-        }
-
-        public void MostrarInforme()
-        {
-            this.CalcularTotal();
-            Console.WriteLine("/////////MOSTRAR INFORME///////////");
-            Console.WriteLine("             Datos Cadetes       ");
-            foreach (var item in this.listadoCadetes)
-            {
-                Console.WriteLine($"{item.Nombre}: {item.CantEnvios}   {item.CantGanado}");
-            }
-            Console.WriteLine("=================DATOS CADETERIA===============");
-            Console.WriteLine($"TOTAL GANADO: {this.TotalGanado}");
-            Console.WriteLine($"TOTAL ENVIOS: {this.TotalEnvios}");
-            Console.WriteLine($"PROMEDIO DE ENVIOS: {this.CantPromEnvios}");
         }
 
     }

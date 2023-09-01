@@ -37,14 +37,12 @@ internal class Program
             {
                     case "a":
                         pedidotomado=DarDeAlta(nroDePedido);
+                        cadeteriaSeleccionada.ListadoPedidos.Add(pedidotomado);
                         nroDePedido+=1;
                         pedidotomado.Mostrar();
                         break;
                     case "b":
-                    if(pedidotomado!=null)
-                    {
-                        cadeteAsignado=AsignarCadete(listaCadetes, pedidotomado);
-                    }
+                        AsignarCadete(cadeteriaSeleccionada, pedidotomado);
                         break;
                     case "c":
                         CambiarDeEstado(pedidotomado, cadeteAsignado);
@@ -66,6 +64,23 @@ internal class Program
 
     }
 
+    private static void AsignarCadete(Cadeteria cadeteriaSeleccionada, Pedido pedidotomado)
+    {
+        if (pedidotomado != null)
+        {
+            Console.WriteLine("Ingrese el id del cadete que desea buscar");
+            var a = Console.ReadLine();
+            int id;
+            bool anda1 = int.TryParse(a, out id);
+            if (anda1)
+            {
+                cadeteriaSeleccionada.AsignarCadeteaPedidoPorId(id, pedidotomado.Nro);
+                Console.WriteLine("Cadete asignado correctamente");
+            }
+
+        }
+    }
+
     private static void CambiarDeEstado(Pedido pedidotomado, Cadete cadeteAsignado)
     {
         Console.WriteLine("Seleccione el estado en que desea colocar el pedido");
@@ -84,20 +99,7 @@ internal class Program
         }
     }
 
-    private static Cadete AsignarCadete(List<Cadete> listaCadetes, Pedido pedidotomado)
-    {
-        Console.WriteLine("Elige el cadete que desea asignar");
-        foreach (var item in listaCadetes)
-        {
-            Console.WriteLine($"{item.Nombre}");
-        }
-        var cadeteAsignar = Console.ReadLine();
-        var cadeteselecionado = listaCadetes.FirstOrDefault(l =>l.Nombre == cadeteAsignar);
-        cadeteselecionado.AsignarPedido(pedidotomado);
-        pedidotomado.AceptarPedido();
-        cadeteselecionado.Mostrar();
-        return(cadeteselecionado);
-    }
+
 
     public static List<Cadeteria> CargarCadeterias(string ruta, List<Cadete> listaCad)
         {
