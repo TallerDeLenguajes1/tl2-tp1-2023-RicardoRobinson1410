@@ -16,15 +16,15 @@ namespace EspacioPrograma
         private string nombre;
         private Cliente nombreCliente;
         private EstadoPedidos estado;
-        private Cadete cadeteAsignado;
+        private Cadete? cadeteAsignado;
 
         public int Nro { get => nro; set => nro = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public Cliente NombreCliente { get => nombreCliente; set => nombreCliente = value; }
         public EstadoPedidos Estado { get => estado; set => estado = value; }
-        public Cadete CadeteAsignado { get => cadeteAsignado; set => cadeteAsignado = value; }
+        public Cadete? CadeteAsignado { get => cadeteAsignado; set => cadeteAsignado = value; }
 
-        public Pedido(int nro, string nombre, Cliente cliente, Cadete cadete)
+        public Pedido(int nro, string nombre, Cliente cliente)
         {
             this.nro=nro;
             this.nombre=nombre;
@@ -49,6 +49,13 @@ namespace EspacioPrograma
             Console.WriteLine("---------------Datos del cliente----------------\n");
             this.NombreCliente.Mostrar();
             Console.WriteLine($"Estado: {this.estado}");
+            if(this.cadeteAsignado==null)
+            {
+                Console.WriteLine("No tiene cadete asignado");
+            }else
+            {
+                Console.WriteLine($"Cadete Asignado: {this.CadeteAsignado.Nombre}");
+            }
         }
 
         public void AsignarCadeteAPedido(Cadete cadete)
@@ -58,13 +65,21 @@ namespace EspacioPrograma
 
         public void AceptarPedido()
         {
-            this.estado=EstadoPedidos.aceptado;
+            if(this.estado==EstadoPedidos.pendiente)
+            {
+                this.estado=EstadoPedidos.aceptado;
+            }
+            
         }
 
         public void RechazarPedido()
         {
-            this.estado=EstadoPedidos.rechazado;
-            this.cadeteAsignado=null;
+            if(this.estado==EstadoPedidos.pendiente)
+            {
+                this.estado=EstadoPedidos.rechazado;
+                this.cadeteAsignado=null;
+            }
+    
         }
     }
 }
