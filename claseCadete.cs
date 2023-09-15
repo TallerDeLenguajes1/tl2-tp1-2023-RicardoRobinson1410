@@ -33,11 +33,12 @@ namespace EspacioPrograma
             this.telefono="";
         }
 
-        public void Mostrar()
+        public string Mostrar()
         {
-            Console.WriteLine($"id: {this.Id}");
-            Console.WriteLine($"nombre: {this.nombre}");
-            Console.WriteLine($"Direccion: {this.direccion}");
+            var cadena=(@$"id: {this.Id}
+            nombre: {this.nombre}
+            Direccion: {this.direccion}");
+            return(cadena);
         }
 
     }

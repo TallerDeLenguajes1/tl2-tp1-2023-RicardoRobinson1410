@@ -29,12 +29,13 @@ namespace EspacioPrograma
             this.telefono="";
             this.datosReferenciaDireccion="";
         }
-        public void Mostrar()
+        public string Mostrar()
         {
-            Console.WriteLine($"Nombre: {this.nombre}");
-            Console.WriteLine($"Direccion: {this.direccion}");
-            Console.WriteLine($"telefono: {this.telefono}");
-            Console.WriteLine($"datosReferenciaDireccion: {this.datosReferenciaDireccion}");
+            var cadena=(@$"Nombre: {this.nombre}
+            Direccion: {this.direccion}
+            telefono: {this.telefono}
+            datosReferenciaDireccion: {this.datosReferenciaDireccion}");
+            return(cadena);
         }
     }
 }

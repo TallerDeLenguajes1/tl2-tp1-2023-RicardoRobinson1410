@@ -13,7 +13,7 @@ namespace EspacioPrograma
             return null;
         }
 
-        public virtual List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string nombreArchivo, List<Cadete> ListaDeCadetes)
+        public virtual List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string nombreArchivo, string nombreArchivo2)
         {
             return null;
         }
@@ -38,7 +38,6 @@ namespace EspacioPrograma
             }
             else
             {
-                Console.WriteLine("Archivo no encontrado: {0}", nombreArchivo);
                 return null;
             }
             return LecturaDelArchivo;
@@ -60,14 +59,10 @@ namespace EspacioPrograma
                     id += 1;
                 }
             }
-            else
-            {
-                Console.WriteLine("\n(no se encontraron cadetes para cargar)");
-            }
             return nuevaLista;
         }
 
-        public override List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string nombreArchivo, List<Cadete> ListaDeCadetes)
+        public override List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string nombreArchivo, string nombreArchivo2)
         {
             var ListaCadeterias = new List<Cadeteria>();
             var datos = HelperDeArchivo.LeerCsv(nombreArchivo);
@@ -79,7 +74,9 @@ namespace EspacioPrograma
                     {
                         break;
                     }
-                    var nuevacadeteria = new Cadeteria(Cadeteria[0], Cadeteria[1], ListaDeCadetes);
+                    var nuevacadeteria = new Cadeteria(Cadeteria[0], Cadeteria[1]);
+                    List<Cadete> ListaDeCadetes = this.LeerArchivoCadetes(nombreArchivo2);
+                    nuevacadeteria.ListadoCadetes=ListaDeCadetes;
                     ListaCadeterias.Add(nuevacadeteria);
                 }
             }
@@ -89,9 +86,10 @@ namespace EspacioPrograma
     }
     public class AccesoADatosJSON : AccesoADatos
     {
-                public override List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string rutaDeArchivo, List<Cadete> ListaCadetes){
+                public override List<Cadeteria>? LeerArchivoCadeteriaYCargarCadetes(string rutaDeArchivo, string nombreArchivo2){
             List<Cadeteria>? listaProductos;
             string documento;
+            var listaCadetes=this.LeerArchivoCadetes(nombreArchivo2);
             using (var archivoOpen = new FileStream(rutaDeArchivo, FileMode.Open))
             {
                 using (var strReader = new StreamReader(archivoOpen))
@@ -104,7 +102,7 @@ namespace EspacioPrograma
                 {
                     foreach (var item in listaProductos)
                 {
-                    item.ListadoCadetes.AddRange(ListaCadetes);
+                    item.ListadoCadetes.AddRange(listaCadetes);
                 }
                 }
                 

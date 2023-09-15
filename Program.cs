@@ -19,12 +19,11 @@ internal class Program
         switch (elegir)
         {
             case 1:
-                listaCadetes=CargarJSON.LeerArchivoCadetes(@"C:\Users\USUARIO\Desktop\Taller2\TrabajosPracticos\tl2-tp1-2023-RicardoRobinson1410\Cadetes .json");
-                listaCadeterias=CargarJSON.LeerArchivoCadeteriaYCargarCadetes(@"C:\Users\USUARIO\Desktop\Taller2\TrabajosPracticos\tl2-tp1-2023-RicardoRobinson1410\Cadeterias.json", listaCadetes);
+    
+                listaCadeterias=CargarJSON.LeerArchivoCadeteriaYCargarCadetes(@"C:\Users\USUARIO\Desktop\Taller2\TrabajosPracticos\tl2-tp1-2023-RicardoRobinson1410\Cadeterias.json", @"C:\Users\USUARIO\Desktop\Taller2\TrabajosPracticos\tl2-tp1-2023-RicardoRobinson1410\Cadetes .json");
                 break;
             case 2:
-                listaCadetes=CargarCSV.LeerArchivoCadetes("nombres.csv");
-                listaCadeterias=CargarCSV.LeerArchivoCadeteriaYCargarCadetes("Cadeterias.csv", listaCadetes);
+                listaCadeterias=CargarCSV.LeerArchivoCadeteriaYCargarCadetes("Cadeterias.csv", @"C:\Users\USUARIO\Desktop\Taller2\TrabajosPracticos\tl2-tp1-2023-RicardoRobinson1410\Nombres.csv");
                 break;
 
         }
@@ -36,14 +35,16 @@ internal class Program
         {
             var ingresar = "a";
             var nroDePedido = 0;
-            cadeteriaSeleccionada.Mostrar();
+            var cad1=cadeteriaSeleccionada.Mostrar();
+            Console.WriteLine(cad1);
 
             while (ingresar != "f")
             {
                 ingresar = Interfaz(cadeteriaSeleccionada, ref nroDePedido);
             }
             var inf = new Informe(cadeteriaSeleccionada.ListadoPedidos,cadeteriaSeleccionada.ListadoCadetes);
-            inf.MostrarInforme(cadeteriaSeleccionada.ListadoCadetes);
+            var cadena=inf.MostrarInforme(cadeteriaSeleccionada.ListadoCadetes);
+            Console.WriteLine(cadena);
         }
         else
         {
@@ -117,7 +118,7 @@ internal class Program
     private static void ReasignarPedido(Cadeteria cadeteriaSeleccionada)
     {
         Console.WriteLine("Ingrese el nro del pedido que desea reasignar");
-        cadeteriaSeleccionada.MostrarPedidosPendientes();
+        var cad1 = cadeteriaSeleccionada.MostrarPedidosPendientes();
         var a = Console.ReadLine();
         int nro;
         bool anda1 = int.TryParse(a, out nro);
@@ -203,25 +204,25 @@ internal class Program
 
 
 
-    public static List<Cadeteria> CargarCadeterias(string ruta, List<Cadete> listaCad)
-    {
-        var ListaCadeterias = new List<Cadeteria>();
-        var HelperDeArchivo = new HelperDeArchivo();
-        var datos = HelperDeArchivo.LeerCsv(ruta);
-        if (datos != null && datos.Any())
-        {
-            foreach (var Cadeteria in datos)
-            {
-                if (Cadeteria == null)
-                {
-                    break;
-                }
-                var nuevacadeteria = new Cadeteria(Cadeteria[0], Cadeteria[1], listaCad);
-                ListaCadeterias.Add(nuevacadeteria);
-            }
-        }
-        return ListaCadeterias;
-    }
+    // public static List<Cadeteria> CargarCadeterias(string ruta, List<Cadete> listaCad)
+    // {
+    //     var ListaCadeterias = new List<Cadeteria>();
+    //     var HelperDeArchivo = new HelperDeArchivo();
+    //     var datos = HelperDeArchivo.LeerCsv(ruta);
+    //     if (datos != null && datos.Any())
+    //     {
+    //         foreach (var Cadeteria in datos)
+    //         {
+    //             if (Cadeteria == null)
+    //             {
+    //                 break;
+    //             }
+    //             var nuevacadeteria = new Cadeteria(Cadeteria[0], Cadeteria[1], listaCad);
+    //             ListaCadeterias.Add(nuevacadeteria);
+    //         }
+    //     }
+    //     return ListaCadeterias;
+    // }
 
     public static List<Cadete> CargarCadetes(string ruta)
     {

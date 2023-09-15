@@ -42,20 +42,17 @@ namespace EspacioPrograma
             this.cadeteAsignado=null;
         }
 
-        public void Mostrar()
+        public string Mostrar()
         {
-            Console.WriteLine($"nro: {this.nro}");
-            Console.WriteLine($"Nombre: {this.nombre}");
-            Console.WriteLine("---------------Datos del cliente----------------\n");
-            this.NombreCliente.Mostrar();
-            Console.WriteLine($"Estado: {this.estado}");
-            if(this.cadeteAsignado==null)
-            {
-                Console.WriteLine("No tiene cadete asignado");
-            }else
-            {
-                Console.WriteLine($"Cadete Asignado: {this.CadeteAsignado.Nombre}");
-            }
+           var cadena=(@$"nro: {this.nro}
+            Nombre: {this.nombre}
+            ---------------Datos del cliente----------------
+            Direccion: {this.nombreCliente.Direccion}
+            Telefono: {this.nombreCliente.Telefono}
+            Estado: {this.estado}
+                    DATOS CADETE");
+            cadena+=this.cadeteAsignado.Mostrar();
+           return(cadena);
         }
 
         public void AsignarCadeteAPedido(Cadete cadete)

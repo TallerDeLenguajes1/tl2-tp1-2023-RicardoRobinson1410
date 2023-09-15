@@ -12,14 +12,15 @@ namespace EspacioPrograma
         private double montoPromXCad;
         private int totalEnvios;
 
-        private void mostrarMontoGanadoYEnviosPorCadete(List<Cadete> listadoCadetes)
+        private string mostrarMontoGanadoYEnviosPorCadete(List<Cadete> listadoCadetes)
         {
+            string cadena="";
             foreach (var item in listadoCadetes)
             {
-                Console.WriteLine($"        CADETE {item.Nombre}:");
-                
-                Console.WriteLine("");
+                cadena+=@$"CADETE {item.Nombre}:";
+
             }
+            return(cadena);
         }
 
         private void calcularMontoGanadoYTotalEnvios(List<Pedido> listadoPedidos)
@@ -51,14 +52,14 @@ namespace EspacioPrograma
             
         }
 
-        public void MostrarInforme(List<Cadete> listadoCadetes)
+        public string MostrarInforme(List<Cadete> listadoCadetes)
         {
-            Console.WriteLine("================INFORME===============");
-            Console.WriteLine($"CANT ENVIOS: {this.totalEnvios}");
-            Console.WriteLine($"MONTO GANADO: {this.montoGanado}");
-            Console.WriteLine($"CANTIDAD PROMEDIO GANADA POR CADETE: {this.montoPromXCad}");
-            Console.WriteLine("====================================================");
-            this.mostrarMontoGanadoYEnviosPorCadete(listadoCadetes);
+            var cadena=(@$"           INFORME
+            CANT ENVIOS: {this.totalEnvios}
+            MONTO GANADO: {this.montoGanado}
+            CANTIDAD PROMEDIO GANADA POR CADETE: {this.montoPromXCad}
+            ====================================================");
+            return(cadena);
         }
     }
 }

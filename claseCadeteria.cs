@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Linq;
+using System.Runtime.CompilerServices;
 namespace EspacioPrograma
 {
     public class Cadeteria
@@ -16,12 +17,11 @@ namespace EspacioPrograma
         public List<Pedido> ListadoPedidos { get => listadoPedidos; set => listadoPedidos = value; }
         public List<Cadete> ListadoCadetes { get => listadoCadetes; set => listadoCadetes = value; }
 
-        public Cadeteria(string name, string phone, List<Cadete> lista)
+        public Cadeteria(string name, string phone)
         {
             this.nombre = name;
             this.telefono = phone;
             this.listadoCadetes = new List<Cadete>();
-            this.listadoCadetes.AddRange(lista);
             this.listadoPedidos=new List<Pedido>();
         }
         public Cadeteria()
@@ -49,9 +49,17 @@ namespace EspacioPrograma
         this.listadoPedidos.Add(PedidoTomado);
         }
 
-        public void TomarPedido(Pedido pedido)
+        public void TomarPedido(int id)
         {
-            this.listadoPedidos.Add(pedido);
+            var pedido = new Pedido();
+            foreach (var item in this.listadoPedidos)
+            {
+                if(item.Nro==id)
+                {
+                     this.listadoPedidos.Add(pedido);
+                }
+            }
+           
         }
 
         public double JornalACobrar(int idCadete){
@@ -97,28 +105,31 @@ namespace EspacioPrograma
         }
        }
 
-        public void Mostrar()
+        public string Mostrar()
         {
-            int contador = 1;
-            Console.WriteLine($"Nombre: {this.nombre}");
-            Console.WriteLine($"Telefono: {this.telefono}");
+            int contador=0;
+            var cadena=@$"Nombre: {this.nombre}
+            Telefono: {this.telefono}";
             foreach (var item in listadoCadetes)
             {
-                Console.WriteLine($"||||||||||CLIENTE {contador}|||||||||||||||");
-                item.Mostrar();
+                cadena+=(@$"||||||||||CLIENTE {contador}|||||||||||||||\n");
+                cadena+=item.Mostrar();
                 contador += 1;
             }
+            return(cadena);
         }
 
-        public void MostrarPedidosPendientes()
+        public string MostrarPedidosPendientes()
         {
+            string cadena="=============PEDIDOS PENDIENTES=============\n";
             foreach (var item in this.listadoPedidos)
             {
                 if(item.Estado==EstadoPedidos.pendiente)
                 {
-                    item.Mostrar();
+                    cadena+=item.Mostrar();
                 }
             }
+            return(cadena);
         }
 
 
